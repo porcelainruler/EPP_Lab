@@ -21,26 +21,16 @@
  * THE SOFTWARE.
  */
 
-package com.porcelainruler.templatemethod;
+package com.iluwatar.iterator;
 
 /**
- * Template Method defines a skeleton for an algorithm. The algorithm subclasses provide
- * implementation for the blank parts.
+ * Iterator interface to be implemented by iterators over various data structures.
  *
- * <p>In this example {@link HalflingThief} contains {@link StealingMethod} that can be changed.
- * First the thief hits with {@link HitAndRunMethod} and then with {@link SubtleMethod}.
+ * @param <T> generically typed for various objects
  */
-public class App {
+public interface Iterator<T> {
 
-  /**
-   * Program entry point.
-   *
-   * @param args command line args
-   */
-  public static void main(String[] args) {
-    var thief = new HalflingThief(new HitAndRunMethod());
-    thief.steal();
-    thief.changeMethod(new SubtleMethod());
-    thief.steal();
-  }
+  boolean hasNext();
+
+  T next();
 }

@@ -21,26 +21,55 @@
  * THE SOFTWARE.
  */
 
-package com.porcelainruler.templatemethod;
+package com.iluwatar.iterator.list;
+
+import com.iluwatar.iterator.Iterator;
 
 /**
- * Template Method defines a skeleton for an algorithm. The algorithm subclasses provide
- * implementation for the blank parts.
- *
- * <p>In this example {@link HalflingThief} contains {@link StealingMethod} that can be changed.
- * First the thief hits with {@link HitAndRunMethod} and then with {@link SubtleMethod}.
+ * TreasureChestItemIterator.
  */
-public class App {
+public class TreasureChestItemIterator implements Iterator<Item> {
+
+  private TreasureChest chest;
+  private int idx;
+  private ItemType type;
 
   /**
-   * Program entry point.
-   *
-   * @param args command line args
+   * Constructor.
    */
-  public static void main(String[] args) {
-    var thief = new HalflingThief(new HitAndRunMethod());
-    thief.steal();
-    thief.changeMethod(new SubtleMethod());
-    thief.steal();
+  public TreasureChestItemIterator(TreasureChest chest, ItemType type) {
+    this.chest = chest;
+    this.type = type;
+    this.idx = -1;
+  }
+
+  @Override
+  public boolean hasNext() {
+    return findNextIdx() != -1;
+  }
+
+  @Override
+  public Item next() {
+    idx = findNextIdx();
+    if (idx != -1) {
+      return chest.getItems().get(idx);
+    }
+    return null;
+  }
+
+  private int findNextIdx() {
+    var items = chest.getItems();
+    var tempIdx = idx;
+    while (true) {
+      tempIdx++;
+      if (tempIdx >= items.size()) {
+        tempIdx = -1;
+        break;
+      }
+      if (type.equals(ItemType.ANY) || items.get(tempIdx).getType().equals(type)) {
+        break;
+      }
+    }
+    return tempIdx;
   }
 }
